@@ -1,6 +1,17 @@
 require "bundler/setup"
-require "superbot"
 
+require "simplecov"
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+end
+SimpleCov.minimum_coverage 100
+SimpleCov.minimum_coverage_by_file 100
+SimpleCov.start do
+  add_filter "/spec/"
+  add_filter "/lib/superbot/cli/"
+end
+
+require "superbot"
 require "kommando"
 
 RSpec.configure do |config|
