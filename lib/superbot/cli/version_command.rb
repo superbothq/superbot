@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Superbot
   module CLI
     class VersionCommand < Clamp::Command
