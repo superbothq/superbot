@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -e
+
+exe/superbot
+exe/superbot version
