@@ -6,3 +6,9 @@ rvm:
   - 2.3
 before_install:
   - gem install bundler -v 1.16.2
+jobs:
+  include:
+    - stage: publish mac binary
+      script: ./build/macos.sh
+      rvm: 2.4
+      os: osx
