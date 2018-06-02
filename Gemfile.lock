@@ -56,7 +56,7 @@ DEPENDENCIES
   rake (~> 10.0)
   rspec (~> 3.0)
   rubocop (~> 0.53)
-  simplecov
+  simplecov (~> 0.16)
   superbot!
 
 BUNDLED WITH

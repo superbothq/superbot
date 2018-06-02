@@ -6,6 +6,7 @@ AllCops:
     - Gemfile
     - "*.gemspec"
     - bundler/**/*
+    - vendor/bundle/**/* # travis with --deployment
   TargetRubyVersion: 2.4
 
 Style/PercentLiteralDelimiters:
