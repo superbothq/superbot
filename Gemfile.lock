@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    superbot (0.0.1)
+    superbot (0.1.0)
       clamp (= 1.2.1)
 
 GEM
