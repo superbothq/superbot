@@ -4,3 +4,7 @@ set -e
 
 exe/superbot
 exe/superbot version
+
+echo "
+
+ok"
