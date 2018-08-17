@@ -2,6 +2,7 @@
 
 require_relative "version_command"
 require_relative "new_command"
+require_relative "run_command"
 
 module Superbot
   module CLI
@@ -10,6 +11,7 @@ module Superbot
 
       subcommand ["version"], "Show version information", VersionCommand
       subcommand ["new"], "Create a new project", NewCommand
+      subcommand ["run"], "Run a project", RunCommand
 
       def self.run
         super

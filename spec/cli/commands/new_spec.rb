@@ -41,10 +41,11 @@ RSpec.describe Superbot::CLI::NewCommand do
       expect(@k.code).to eq 0
       expect(Dir.exist? "__test").to be_truthy
       expect(File.exist? "__test/main.rb").to be_truthy
-      contents = File.read "__test/main.rb"
 
+      contents = File.read "__test/main.rb"
       expect(contents).to eq """visit \"example.com\"
 """
+
       expect(@k.out).to include "🤖 created directory __test"
       expect(@k.out).to include "superbot run __test"
     end
