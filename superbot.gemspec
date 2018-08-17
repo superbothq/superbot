@@ -40,4 +40,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "kommando", "~> 0.1"
   spec.add_development_dependency "rubocop", "~> 0.53"
   spec.add_development_dependency "simplecov", "~> 0.16"
+
+  spec.add_development_dependency "guard", "~> 2.14"
+  spec.add_development_dependency "guard-rspec", "~> 4.7"
+  spec.add_development_dependency "guard-rubocop", "~> 1.3"
 end
