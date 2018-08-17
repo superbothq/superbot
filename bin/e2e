@@ -4,6 +4,8 @@ set -e
 
 exe/superbot
 exe/superbot version
+exe/superbot new __test_e2e
+rm -rf __test_e2e
 
 echo "
 

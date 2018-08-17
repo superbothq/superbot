@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "version_command"
+require_relative "new_command"
 
 module Superbot
   module CLI
@@ -8,6 +9,7 @@ module Superbot
       banner "superbot 🤖"
 
       subcommand ["version"], "Show version information", VersionCommand
+      subcommand ["new"], "Create a new project", NewCommand
 
       def self.run
         super

@@ -11,6 +11,10 @@ guard :rspec, cmd: "bundle exec rspec", all_after_pass: true do
 
   ruby = dsl.ruby
   dsl.watch_spec_files_for(ruby.lib_files)
+
+  watch %r{^lib\/superbot\/cli\/(?<command>.+)_command\.rb$} do |m|
+    "spec/cli/commands/#{m[:command]}_spec.rb"
+  end
 end
 
 guard :rubocop do
