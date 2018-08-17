@@ -2,12 +2,11 @@ require "spec_helper"
 
 RSpec.describe "CLI version" do
 
-  before :each do
-    @k = Kommando.new "exe/superbot version"
-    @k.run
-  end
+  before { @k = superbot "version" }
 
-  it "prints version" do
-    expect(@k.out.chomp).to eq Superbot::VERSION
+  describe "stdout" do
+    it do
+      expect(@k.out).to eq "#{Superbot::VERSION}\r\n"
+    end
   end
 end

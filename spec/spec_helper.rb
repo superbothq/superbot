@@ -25,3 +25,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+def superbot(cmd, opts={})
+  k = Kommando.new "exe/superbot #{cmd}", opts
+  k.run
+  k
+end
