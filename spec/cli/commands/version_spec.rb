@@ -1,7 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "CLI version" do
-
+RSpec.describe Superbot::CLI::VersionCommand do
   before { @k = superbot "version" }
 
   describe "stdout" do

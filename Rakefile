@@ -5,10 +5,11 @@ STDOUT.sync = true
 require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require "kommando"
+require "parallel_tests/tasks"
 
 RSpec::Core::RakeTask.new(:spec)
 
-task default: %i[rubocop spec e2e]
+task default: %i[rubocop parallel:spec e2e]
 
 task :rubocop do
   rubocop_k = Kommando.puts "rubocop"

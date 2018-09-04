@@ -3,51 +3,51 @@ require "spec_helper"
 RSpec.describe Superbot::CLI::NewCommand do
   describe "errors" do
     around do |example|
-      FileUtils.mkdir "__test_existing" unless Dir.exist? "__test_existing"
-      File.write "__test_existing.file", ""
+      FileUtils.mkdir superbot_test_path("existing") unless Dir.exist? superbot_test_path("existing")
+      File.write superbot_test_path("existing.file"), ""
       example.call
-      FileUtils.rm_r "__test_existing" if Dir.exist? "__test_existing"
-      FileUtils.rm_r "__test_existing.file" if File.exist? "__test_existing.file"
+      FileUtils.rm_r superbot_test_path("existing") if Dir.exist? superbot_test_path("existing")
+      FileUtils.rm_r superbot_test_path("existing.file") if File.exist? superbot_test_path("existing.file")
     end
 
     it do
-      @k = superbot "new __test_existing"
+      @k = superbot "new", superbot_test_path("existing")
       expect(@k.code).to eq 1
-      expect(@k.out).to include "directory __test_existing already exists"
+      expect(@k.out).to include "directory #{superbot_test_path("existing")} already exists"
     end
 
     it do
-      @k = superbot "new __test_existing.file"
+      @k = superbot "new", superbot_test_path("existing.file")
       expect(@k.code).to eq 1
-      expect(@k.out).to include "__test_existing.file is an existing file"
+      expect(@k.out).to include "#{superbot_test_path("existing.file")} is an existing file"
     end
 
     it do
-      @k = superbot "new __test*invalid"
+      @k = superbot "new", superbot_test_path("*invalid")
       expect(@k.code).to eq 1
-      expect(@k.out).to include "__test*invalid is not valid name for a directory"
+      expect(@k.out).to include "#{superbot_test_path("*invalid")} is not valid name for a directory"
     end
   end
 
   describe "success" do
     around do |example|
-      FileUtils.rm_r "__test" if Dir.exist? "__test"
+      FileUtils.rm_r superbot_test_path if Dir.exist? superbot_test_path
       example.call
-      FileUtils.rm_r "__test" if Dir.exist? "__test"
+      FileUtils.rm_r superbot_test_path if Dir.exist? superbot_test_path
     end
 
     it do
-      @k = superbot "new __test"
+      @k = superbot "new", superbot_test_path
       expect(@k.code).to eq 0
-      expect(Dir.exist? "__test").to be_truthy
-      expect(File.exist? "__test/main.rb").to be_truthy
+      expect(Dir.exist? superbot_test_path).to be_truthy
+      expect(File.exist? File.join(superbot_test_path, "main.rb")).to be_truthy
 
-      contents = File.read "__test/main.rb"
-      expect(contents).to eq """visit \"example.com\"
+      contents = File.read File.join(superbot_test_path, "main.rb")
+      expect(contents).to eq """visit \"http://example.com\"
 """
 
-      expect(@k.out).to include "🤖 created directory __test"
-      expect(@k.out).to include "superbot run __test"
+      expect(@k.out).to include "🤖 created directory #{superbot_test_path}"
+      expect(@k.out).to include "superbot run #{superbot_test_path}"
     end
   end
 end

@@ -3,21 +3,22 @@
 module Superbot
   module CLI
     class RunCommand < Clamp::Command
-      parameter "PATH", "project directory" do |path|
-        unless Dir.exist? path
-          raise ArgumentError, "directory #{path} does not exist"
-        end
+      include Superbot::Validations
 
-        entrypoint = File.join path, "main.rb"
-        unless File.exist? entrypoint
-          raise ArgumentError, "file #{entrypoint} does not exist"
-        end
+      parameter "PATH", "project directory" do |path|
+        validates_project_path path
 
         path
       end
 
       def execute
-        ""
+        web = Superbot::Web.new
+        web.run_async_after_running!
+
+        puts "🤖 active"
+        puts ""
+        puts "Press enter to exit"
+        $stdin.gets
       end
     end
   end

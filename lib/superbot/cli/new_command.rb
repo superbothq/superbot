@@ -24,7 +24,7 @@ module Superbot
 
       def execute
         FileUtils.mkdir path
-        File.write File.join(path, "main.rb"), "visit \"example.com\"\n"
+        File.write File.join(path, "main.rb"), "visit \"http://example.com\"\n"
 
         puts """🤖 created directory #{path} with main.rb
 
