@@ -9,4 +9,11 @@ $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 STDOUT.sync = true
 
 require 'superbot'
+begin
+  require 'superbot/cloud'
+rescue LoadError
+  puts "If you want to use Superbot Cloud sub-commands you can install superbot-cloud gem"
+  puts ""
+end
+
 Superbot::CLI::RootCommand.run
