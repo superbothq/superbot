@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require "sinatra/silent"
+require_relative "capybara/convert"
 
 module Superbot
   class Web
@@ -28,9 +29,30 @@ module Superbot
       end
 
       @sinatra.post "/__superbot/v1/convert" do
-        body = JSON.parse(request.body.read)
+        converted_body = Superbot::Capybara::Convert.call(request.body.read)
+        begin
+          gem 'superbot-capybara'
 
-        "visit 'http://example.com'\n#{body.inspect}"
+          k = Kommando.new "sb-capybara"
+          k.in.writeln({ eval: converted_body.join('; ') }.to_json)
+
+          finished = false
+          k.out.once /(error|ok)/x do
+            finished = true
+          end
+
+          k.run_async
+
+          loop do
+            break if finished
+            sleep 0.001
+          end
+          k.kill
+        rescue Gem::LoadError
+          puts "superbot-capybara not installed"
+        end
+
+        converted_body
       end
     end
 
