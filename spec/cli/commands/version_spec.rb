@@ -5,7 +5,7 @@ RSpec.describe Superbot::CLI::VersionCommand do
 
   describe "stdout" do
     it do
-      expect(@k.out).to eq "#{Superbot::VERSION}\r\n"
+      expect(@k.out).to include "#{Superbot::VERSION}\r\n"
     end
   end
 end
