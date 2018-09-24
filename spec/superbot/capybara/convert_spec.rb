@@ -17,7 +17,7 @@ RSpec.describe Superbot::Capybara::Convert do
         "page.driver.browser.manage.window.resize_to(1920,1080)"
       ].join('; ')
 
-      expect(Superbot::Capybara::Robot).to receive(:run).with(expected_script)
+      expect(Superbot::Capybara::Runner).to receive(:run).with(expected_script)
 
       expect(described_class.call(json)).to eq(expected_script)
     end

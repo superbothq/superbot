@@ -2,7 +2,7 @@
 
 module Superbot
   module Capybara
-    class Robot
+    class Runner
       def initialize(script)
         @script = script
       end

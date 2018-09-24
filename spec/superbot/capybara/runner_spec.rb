@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Superbot::Capybara::Robot do
+RSpec.describe Superbot::Capybara::Runner do
   describe "run" do
     let(:script) do
       [

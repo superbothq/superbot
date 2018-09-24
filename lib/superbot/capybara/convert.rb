@@ -14,7 +14,7 @@ module Superbot
       end
 
       def call
-        converted_json&.tap { |script| Superbot::Capybara::Robot.run(script) }
+        converted_json&.tap { |script| Superbot::Capybara::Runner.run(script) }
       end
 
       attr_accessor :json
