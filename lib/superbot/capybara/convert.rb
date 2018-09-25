@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'kommando'
-
 module Superbot
   module Capybara
     class Convert
