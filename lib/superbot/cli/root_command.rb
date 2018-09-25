@@ -19,6 +19,12 @@ module Superbot
         warn exc.message
         warn exc.backtrace.join("\n")
       end
+
+      def subcommand_missing(name)
+        return super unless %w(cloud local).include?(name)
+
+        abort "Subcommand '#{name}' requires gem superbot-#{name} to be installed"
+      end
     end
   end
 end
