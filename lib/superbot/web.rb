@@ -30,8 +30,7 @@ module Superbot
       end
 
       @sinatra.post "/__superbot/v1/convert" do
-        converted_body = Superbot::Capybara::Convert.call(request.body.read)
-        converted_body
+        Superbot::Capybara::Convert.call(request.body.read)
       end
     end
 

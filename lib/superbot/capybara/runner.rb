@@ -26,7 +26,18 @@ module Superbot
         k.in.writeln({ eval: script }.to_json)
 
         finished = false
-        k.out.once /(error|ok)/x do
+
+        k.out.once(/{"type":"ok".*\n/) do
+          puts "Test succeed"
+          finished = true
+        end
+
+        k.out.once(/{"type":"error".*\n/) do
+          begin
+            parsed_error = JSON.parse(k.out.lines.last, symbolize_names: true)
+            error_message = parsed_error[:message]
+            puts "Test failed with #{error_message}"
+          end
           finished = true
         end
 
@@ -37,7 +48,12 @@ module Superbot
 
           sleep 0.001
         end
-        k.kill
+
+        begin
+          k.kill
+        rescue Timeout::Error
+          p # do nothing
+        end
       rescue Gem::LoadError
         puts "superbot-capybara not installed"
       end
