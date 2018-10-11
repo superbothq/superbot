@@ -3,10 +3,7 @@ require "spec_helper"
 RSpec.describe Superbot::Capybara::Runner do
   describe "run" do
     let(:script) do
-      [
-        "visit 'http://www.example.com'",
-        "page.driver.browser.close"
-      ].join('; ')
+      "visit 'http://www.example.com'"
     end
 
     context "when sb-capybara installed" do
