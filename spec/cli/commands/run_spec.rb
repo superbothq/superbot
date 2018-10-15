@@ -41,12 +41,12 @@ RSpec.describe Superbot::CLI::RunCommand do
       @k.run_async
       wait_web
 
-      payload = { id: 123, type: 'visit', url: 'http://www.example.com' }
+      payload = [{ id: 123, type: 'visit', url: 'http://www.example.com' }]
 
       response = http_post_json "http://127.0.0.1:4567/__superbot/v1/convert", payload
       @k.kill
 
-      expect(response.body).to match "visit 'http://example.com'"
+      expect(response.body).to match "visit 'http://www.example.com'"
     end
   end
 end

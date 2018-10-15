@@ -2,6 +2,8 @@
 
 require 'sinatra'
 require "sinatra/silent"
+require_relative "capybara/convert"
+require_relative "capybara/runner"
 
 module Superbot
   class Web
@@ -28,9 +30,7 @@ module Superbot
       end
 
       @sinatra.post "/__superbot/v1/convert" do
-        body = JSON.parse(request.body.read)
-
-        "visit 'http://example.com'\n#{body.inspect}"
+        Superbot::Capybara::Convert.call(request.body.read)
       end
     end
 
@@ -45,6 +45,7 @@ module Superbot
 
       loop do
         break if @sinatra.running?
+
         sleep 0.001
       end
     end
