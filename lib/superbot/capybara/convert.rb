@@ -30,7 +30,8 @@ module Superbot
       end
 
       def converted_json
-        json.map { |action| convert_action(action) }.join('; ')
+        return json.map { |action| convert_action(action) }.join('; ') if json.is_a?(Array)
+        return convert_action(json) if json.is_a?(Hash)
       end
     end
   end
