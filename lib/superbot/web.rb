@@ -13,6 +13,7 @@ module Superbot
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
+      instance = self
 
       @sinatra.before do
         headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -30,8 +31,13 @@ module Superbot
       end
 
       @sinatra.post "/__superbot/v1/convert" do
-        Superbot::Capybara::Convert.call(request.body.read)
+        converted_script = Superbot::Capybara::Convert.call(request.body.read)
+        instance.capybara_runner.run(converted_script)
       end
+    end
+
+    def capybara_runner
+      @capybara_runner ||= Superbot::Capybara::Runner.new
     end
 
     def run!
