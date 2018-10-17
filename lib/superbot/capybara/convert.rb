@@ -26,6 +26,7 @@ module Superbot
         when 'scroll'     then
           "page.execute_script('window.scrollBy(0,' + (page.execute_script('return document.body.scrollHeight') * #{action[:amountPercent]} / 100).to_s + ')')"
         when 'resolution' then "page.driver.browser.manage.window.resize_to(#{action[:resolution].join(',')})"
+        when 'has-text'   then "page.assert_text('#{action[:text]}')"
         end
       end
 
