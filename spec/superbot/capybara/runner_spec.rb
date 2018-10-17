@@ -7,15 +7,25 @@ RSpec.describe Superbot::Capybara::Runner do
     end
 
     context "when sb-capybara installed" do
+      let(:runner) { described_class.new }
+
       context "when valid capybara script" do
         it "succesfully runs script with sb-capybara" do
-          expect { described_class.run(script) }.to output("Test succeed\n").to_stdout
+          expect do
+            runner.run(script)
+            sleep 2
+          end.to output("Test succeed!\n").to_stdout
+          runner.kill_session
         end
       end
 
       context "when invalid script" do
         it "fails to execute script" do
-          expect { described_class.run('invalid') }.to output(/Test failed.*/).to_stdout
+          expect do
+            runner.run('invalid')
+            sleep 1
+          end.to output(/Test failed.*/).to_stdout
+          runner.kill_session
         end
       end
     end

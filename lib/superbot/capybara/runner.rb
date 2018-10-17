@@ -5,59 +5,58 @@ require 'kommando'
 module Superbot
   module Capybara
     class Runner
-      def initialize(script)
-        @script = script
+      def self.run(script)
+        new.run(script)
       end
 
-      def self.run(*args)
-        new(*args).run
+      def run(script)
+        create_runner
+        runner.in.writeln({ eval: script }.to_json)
       end
 
-      def run
-        run_script
+      def rerun(script)
+        runner.in.writeln({ eval: script }.to_json)
       end
+
+      def kill_session
+        runner&.kill
+      rescue Timeout::Error
+        p # do nothing
+      ensure
+        @runner = nil
+      end
+
+      attr_accessor :script, :runner, :finished
 
       private
 
-      attr_accessor :script
+      def create_runner
+        return if runner
 
-      def run_script
         gem 'superbot-capybara'
 
-        k = Kommando.new "sb-capybara"
-        k.in.writeln({ eval: script }.to_json)
+        @runner = Kommando.new "sb-capybara"
 
-        finished = false
+        @finished = false
 
-        k.out.once(/{"type":"ok".*\n/) do
-          puts "Test succeed"
-          finished = true
+        runner.out.every(/{"type":"ok".*\n/) do
+          puts "Test succeed!"
+          @finished = true
         end
 
-        k.out.once(/{"type":"error".*\n/) do
-          begin
-            parsed_error = JSON.parse(k.out.lines.last, symbolize_names: true)
-            error_message = parsed_error[:message]
-            puts "Test failed with #{error_message}"
+        runner.out.every(/{"type":"error".*\n/) do
+          parsed_error = JSON.parse(runner.out.lines.last, symbolize_names: true)
+          puts "Test failed: #{parsed_error[:message]}"
+          @finished = true
+          if parsed_error[:class].start_with?('Selenium::WebDriver::Error')
+            kill_session
+            puts "", "ERROR: Seems like browser session has been closed, try to run test again to create new session"
           end
-          finished = true
         end
 
-        k.run_async
-
-        loop do
-          break if finished
-
-          sleep 0.001
-        end
-
-        begin
-          k.kill
-        rescue Timeout::Error
-          p # do nothing
-        end
+        runner.run_async
       rescue Gem::LoadError
-        puts "superbot-capybara not installed"
+        abort "superbot-capybara not installed"
       end
     end
   end
