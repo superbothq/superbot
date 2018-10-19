@@ -44,7 +44,8 @@ module Superbot
           parsed_error = JSON.parse(runner.out.lines.last, symbolize_names: true)
           puts "Test failed: #{parsed_error[:message]}"
           @finished = true
-          if parsed_error[:class].start_with?('Selenium::WebDriver::Error')
+
+          if parsed_error[:class].match?(/Selenium::WebDriver::Error::(WebDriverError|NoSuchWindowError)/)
             kill_session
             puts "", "ERROR: Seems like browser session has been closed, try to run test again to create new session"
           end
