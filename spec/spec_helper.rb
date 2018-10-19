@@ -15,7 +15,6 @@ SimpleCov.start do
 end
 
 require "superbot"
-require "kommando"
 require "net/http"
 require "excon"
 

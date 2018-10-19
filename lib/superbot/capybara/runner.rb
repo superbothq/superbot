@@ -14,10 +14,6 @@ module Superbot
         runner.in.writeln({ eval: script }.to_json)
       end
 
-      def rerun(script)
-        runner.in.writeln({ eval: script }.to_json)
-      end
-
       def kill_session
         runner&.kill
       rescue Timeout::Error
