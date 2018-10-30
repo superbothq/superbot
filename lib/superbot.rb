@@ -2,7 +2,7 @@
 
 module Superbot
   WEBDRIVER_ENDPOINT = {
-    cloud: "http://bot1:hcegZRUvrfJJTSVT3KTDyggpEZAUSS@webdriver.superbot.cloud:3000/webdriver/v1",
+    cloud: "http://webdriver.superbot.cloud:3000/webdriver/v1",
     local: "http://127.0.0.1:9515"
   }.freeze
   private_constant :WEBDRIVER_ENDPOINT

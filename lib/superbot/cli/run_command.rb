@@ -13,11 +13,12 @@ module Superbot
         validates_browser_type browser
       end
       option ['--region'], 'REGION', 'Region for remote webdriver'
+      option ['--auth-token'], 'AUTH_TOKEN', 'Cloud webdriver auth credentials', environment_variable: 'CLOUD_DRIVER_AUTH_TOKEN'
 
       def execute
         script = File.read(File.join(path, 'main.rb'))
 
-        webdriver_proxy = Superbot::Web.new(webdriver_endpoint: Superbot.webdriver_endpoint(browser))
+        webdriver_proxy = Superbot::Web.new(webdriver_endpoint: Superbot.webdriver_endpoint(browser), auth_token: auth_token)
         webdriver_proxy.run_async_after_running!
         puts "🤖 active"
 
