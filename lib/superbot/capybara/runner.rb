@@ -17,7 +17,7 @@ module Superbot
       def run(script)
         puts "Attaching to #{browser} browser..."
         create_runner
-        if browser.cloud?
+        if browser == 'cloud'
           puts "Opening screenshot stream..."
           runner.in.writeln({ eval: screenshot_stream }.to_json)
           wait_for_finish
