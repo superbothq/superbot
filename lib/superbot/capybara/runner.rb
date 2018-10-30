@@ -5,13 +5,26 @@ require 'kommando'
 module Superbot
   module Capybara
     class Runner
-      def self.run(script)
-        new.run(script)
+      def initialize(browser: :local, region: nil)
+        @browser = browser
+        @region = region
+      end
+
+      def self.run(script, browser: :local, region: nil)
+        new(browser: browser, region: region).run(script)
       end
 
       def run(script)
+        puts "Attaching to #{browser} browser..."
         create_runner
+        if browser.cloud?
+          puts "Opening screenshot stream..."
+          runner.in.writeln({ eval: screenshot_stream }.to_json)
+          wait_for_finish
+        end
+        puts "Running test..."
         runner.in.writeln({ eval: script }.to_json)
+        wait_for_finish
       end
 
       def kill_session
@@ -22,38 +35,103 @@ module Superbot
         @runner = nil
       end
 
-      attr_accessor :script, :runner, :finished
+      def wait_for_finish
+        loop do
+          if finished
+            @finished = false
+            break
+          end
+
+          sleep 0.1
+        end
+      end
+
+      attr_accessor :script, :runner, :finished, :test_result, :browser, :region
 
       private
 
       def create_runner
+        @finished = false
+
         return if runner
 
         gem 'superbot-capybara'
 
         @runner = Kommando.new "sb-capybara"
 
-        @finished = false
-
         runner.out.every(/{"type":"ok".*\n/) do
-          puts "Test succeed!"
+          @test_result = "Test succeed!"
           @finished = true
         end
 
         runner.out.every(/{"type":"error".*\n/) do
           parsed_error = JSON.parse(runner.out.lines.last, symbolize_names: true)
-          puts "Test failed: #{parsed_error[:message]}"
+          @test_result = "Test failed: #{parsed_error[:message]}"
           @finished = true
 
-          if parsed_error[:class].match?(/Selenium::WebDriver::Error::(WebDriverError|NoSuchWindowError)/)
+          case parsed_error[:class]
+          when "Selenium::WebDriver::Error::WebDriverError", "Selenium::WebDriver::Error::NoSuchWindowError"
             kill_session
-            puts "", "ERROR: Seems like browser session has been closed, try to run test again to create new session"
+            puts parsed_error[:message]
+            puts "", "Seems like browser session has been closed, try to run test again to create new session"
+          when "Selenium::WebDriver::Error::ServerError"
+            kill_session
+            abort "Remote browser error: #{parsed_error[:message]}"
+          else
+            puts parsed_error[:message]
           end
         end
 
         runner.run_async
+
+        runner.in.writeln({ eval: webdriver_config }.to_json)
+        wait_for_finish
       rescue Gem::LoadError
         abort "superbot-capybara not installed"
+      end
+
+      def webdriver_config
+        <<-WEBDRIVER_CONFIG
+          ::Capybara.register_driver :chrome_remote do |app|
+            webdriver_capabilities = ::Selenium::WebDriver::Remote::Capabilities.chrome(
+              chromeOptions: {
+                'args' => [
+                  'no-sandbox',
+                  'no-default-browser-check',
+                  'disable-infobars',
+                  'app=about:blank',
+                ]
+              },
+              superOptions: #{region ? { region: region } : {}}
+            )
+
+            webdriver_http_client = ::Selenium::WebDriver::Remote::Http::Default.new.tap do |client|
+              client.read_timeout = #{Superbot.cloud_timeout}
+              client.open_timeout = #{Superbot.cloud_timeout}
+            end
+
+            ::Capybara::Selenium::Driver.new(
+              app,
+              browser: :chrome,
+              desired_capabilities: webdriver_capabilities,
+              http_client: webdriver_http_client,
+              url: 'http://127.0.0.1:4567/wd/hub'
+            )
+          end
+          ::Capybara.current_driver = :chrome_remote
+          session_id = ::Capybara.current_session.driver.browser.send(:bridge).session_id
+        WEBDRIVER_CONFIG
+      end
+
+      def screenshot_stream
+        <<-SCREENSHOT_STREAM
+          screenshots_url = 'http://peek.superbot.cloud/v1/' + session_id
+          ::Capybara.current_driver = :selenium_chrome
+          ::Capybara.session_name = :peek
+          visit screenshots_url
+          ::Capybara.current_driver = :chrome_remote
+          ::Capybara.session_name = :default
+        SCREENSHOT_STREAM
       end
     end
   end
