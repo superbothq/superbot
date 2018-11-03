@@ -13,28 +13,28 @@ module Superbot
         validates_browser_type browser
       end
       option ['--region'], 'REGION', 'Region for remote webdriver'
-      option ['--auth-token'], 'AUTH_TOKEN', 'Cloud webdriver auth credentials', environment_variable: 'CLOUD_DRIVER_AUTH_TOKEN'
+      option ['-u', '--user'], 'AUTH_USER_NAME', 'Cloud webdriver auth credentials', environment_variable: 'AUTH_USER_NAME', attribute_name: :auth_user
+      option ['-p', '--password'], 'AUTH_USER_PASSWORD', 'Cloud webdriver auth credentials', environment_variable: 'AUTH_USER_PASSWORD', attribute_name: :auth_password
 
       def execute
         script = File.read(File.join(path, 'main.rb'))
 
-        webdriver_proxy = Superbot::Web.new(webdriver_endpoint: Superbot.webdriver_endpoint(browser), auth_token: auth_token)
-        webdriver_proxy.run_async_after_running!
-        puts "🤖 active"
+        @teleport = Thread.new do
+          Superbot::CLI::TeleportCommand.run(nil, ARGV[2..-1], context)
+        rescue => e
+          abort e.message
+        end
 
-        chromedriver = Kommando.run_async 'chromedriver --silent --port=9515' if browser == 'local'
+        @capybara_runner = Superbot::Capybara::Runner.new(browser: browser, region: region)
+        @capybara_runner.run(script)
+        puts @capybara_runner.test_result
 
-        capybara_runner = Superbot::Capybara::Runner.new(browser: browser, region: region)
-        capybara_runner.run(script)
-
-        puts capybara_runner.test_result
         puts "Press ENTER to exit"
 
         $stdin.gets
       ensure
-        chromedriver&.kill
-        webdriver_proxy&.quit!
-        capybara_runner&.kill_session
+        @teleport&.kill
+        @capybara_runner&.kill_session
       end
     end
   end
