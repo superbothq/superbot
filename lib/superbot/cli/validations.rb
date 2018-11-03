@@ -16,7 +16,7 @@ module Superbot
     end
 
     def validates_browser_type(browser)
-      unless %w(local cloud).include?(browser)
+      unless %w(local cloud local_cloud).include?(browser)
         raise ArgumentError, "The '#{browser}' browser option is not allowed. Should be either 'local' or 'cloud'."
       end
 

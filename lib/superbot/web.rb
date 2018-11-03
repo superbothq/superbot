@@ -3,13 +3,14 @@
 require "sinatra/base"
 require "sinatra/silent"
 require 'net/http'
+require 'selenium-webdriver'
 
 require_relative "capybara/convert"
 require_relative "capybara/runner"
 
 module Superbot
   class Web
-    def initialize(webdriver_endpoint: nil, auth_token: nil)
+    def initialize(webdriver_type: 'local', auth_user: nil, auth_password: nil)
       @sinatra = Sinatra.new
       @sinatra.set :bind, "127.0.0.1"
       @sinatra.set :silent_sinatra, true
@@ -37,12 +38,11 @@ module Superbot
         instance.capybara_runner.run(converted_script)
       end
 
-      return unless webdriver_endpoint
-
-      webdriver_uri = URI.parse(webdriver_endpoint)
-      @auth_token = auth_token
+      webdriver_uri = URI.parse(Superbot.webdriver_endpoint(webdriver_type))
+      @auth_user = auth_user
+      @auth_password = auth_password
       @request_settings = {
-        userinfo: @auth_token,
+        userinfo: [@auth_user, @auth_password].join(':'),
         host:     webdriver_uri.host,
         port:     webdriver_uri.port,
         path:     webdriver_uri.path
@@ -61,10 +61,18 @@ module Superbot
             )
             status response.code
             headers instance.all_headers(response)
+
+            if %w(cloud local_cloud).include?(webdriver_type) && verb == 'post' && request.path_info == '/wd/hub/session' && response.kind_of?(Net::HTTPSuccess)
+              session_id = JSON.parse(response.body)['sessionId']
+
+              puts "Opening screenshots stream..."
+              options = Selenium::WebDriver::Chrome::Options.new
+              options.add_argument("app=#{Superbot.screenshots_url(webdriver_type, session_id)}")
+              options.add_argument('no-sandbox')
+              ::Selenium::WebDriver.for :chrome, options: options
+            end
+
             response.body
-          rescue => e
-            puts e.message
-            halt 500, { message: e.message }.to_json
           end
         end
       end
@@ -82,7 +90,7 @@ module Superbot
         )
       )
       req = Net::HTTP.const_get(type).new(uri, new_headers.merge('Content-Type' => 'application/json'))
-      req.basic_auth(*@auth_token.split(':')) if @auth_token
+      req.basic_auth(@auth_user, @auth_password) if @auth_user && @auth_password
       req.body = body.read
       Net::HTTP.new(uri.hostname, uri.port).start do |http|
         http.read_timeout = Superbot.cloud_timeout

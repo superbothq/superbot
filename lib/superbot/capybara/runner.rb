@@ -17,11 +17,6 @@ module Superbot
       def run(script)
         puts "Attaching to #{browser} browser..."
         create_runner
-        if browser == 'cloud'
-          puts "Opening screenshot stream..."
-          runner.in.writeln({ eval: screenshot_stream }.to_json)
-          wait_for_finish
-        end
         puts "Running test..."
         runner.in.writeln({ eval: script }.to_json)
         wait_for_finish
@@ -72,7 +67,6 @@ module Superbot
           case parsed_error[:class]
           when "Selenium::WebDriver::Error::WebDriverError", "Selenium::WebDriver::Error::NoSuchWindowError"
             kill_session
-            puts parsed_error[:message]
             puts "", "Seems like browser session has been closed, try to run test again to create new session"
           when "Selenium::WebDriver::Error::ServerError"
             kill_session
@@ -119,19 +113,7 @@ module Superbot
             )
           end
           ::Capybara.current_driver = :chrome_remote
-          session_id = ::Capybara.current_session.driver.browser.send(:bridge).session_id
         WEBDRIVER_CONFIG
-      end
-
-      def screenshot_stream
-        <<-SCREENSHOT_STREAM
-          screenshots_url = 'http://peek.superbot.cloud/v1/' + session_id
-          ::Capybara.current_driver = :selenium_chrome
-          ::Capybara.session_name = :peek
-          visit screenshots_url
-          ::Capybara.current_driver = :chrome_remote
-          ::Capybara.session_name = :default
-        SCREENSHOT_STREAM
       end
     end
   end
