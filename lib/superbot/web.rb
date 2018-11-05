@@ -73,6 +73,10 @@ module Superbot
             end
 
             response.body
+          rescue
+            error_message = "Remote webdriver doesn't responding"
+            puts error_message
+            halt 500, { message: error_message }.to_json
           end
         end
       end

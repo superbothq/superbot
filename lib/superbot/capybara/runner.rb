@@ -60,7 +60,11 @@ module Superbot
         end
 
         runner.out.every(/{"type":"error".*\n/) do
-          parsed_error = JSON.parse(runner.out.lines.last, symbolize_names: true)
+          parsed_error = begin
+                           JSON.parse(runner.out.lines.last, symbolize_names: true)
+                         rescue JSON::ParseError
+                           { message: runner.out.lines.last }
+                         end
           @test_result = "Test failed: #{parsed_error[:message]}"
           @finished = true
 

@@ -23,10 +23,11 @@ module Superbot
         puts "", "🤖 Teleport is active ☁️ "
 
         $stdin.gets
-      rescue
-        @chromedriver&.kill
-        @web&.quit!
       ensure
+        close_teleport
+      end
+
+      def close_teleport
         @chromedriver&.kill
         @web&.quit!
       end

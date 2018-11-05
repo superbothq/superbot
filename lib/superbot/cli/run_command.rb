@@ -21,8 +21,6 @@ module Superbot
 
         @teleport = Thread.new do
           Superbot::CLI::TeleportCommand.run(nil, ARGV[2..-1], context)
-        rescue => e
-          abort e.message
         end
 
         @capybara_runner = Superbot::Capybara::Runner.new(browser: browser, region: region)
