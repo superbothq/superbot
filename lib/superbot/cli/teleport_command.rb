@@ -2,12 +2,8 @@
 
 module Superbot
   module CLI
-    class RunCommand < Clamp::Command
+    class TeleportCommand < Clamp::Command
       include Superbot::Validations
-
-      parameter "PATH", "project directory" do |path|
-        validates_project_path path
-      end
 
       option ['--browser'], 'BROWSER', "Browser type to use. Can be either local or cloud", default: 'cloud' do |browser|
         validates_browser_type browser
@@ -17,22 +13,23 @@ module Superbot
       option ['-p', '--password'], 'AUTH_USER_PASSWORD', 'Cloud webdriver auth credentials', environment_variable: 'AUTH_USER_PASSWORD', attribute_name: :auth_password
 
       def execute
-        script = File.read(File.join(path, 'main.rb'))
+        @web = Superbot::Web.new(
+          webdriver_type: browser,
+          auth_user: auth_user,
+          auth_password: auth_password
+        ).tap(&:run_async_after_running!)
 
-        @teleport = Thread.new do
-          Superbot::CLI::TeleportCommand.run(nil, ARGV[2..-1], context)
-        end
-
-        @capybara_runner = Superbot::Capybara::Runner.new(browser: browser, region: region)
-        @capybara_runner.run(script)
-        puts @capybara_runner.test_result
-
-        puts "Press ENTER to exit"
+        @chromedriver = Kommando.run_async 'chromedriver --silent --port=9515' if browser == 'local'
+        puts "", "🤖 Teleport is active ☁️ "
 
         $stdin.gets
       ensure
-        @teleport&.kill
-        @capybara_runner&.kill_session
+        close_teleport
+      end
+
+      def close_teleport
+        @chromedriver&.kill
+        @web&.quit!
       end
     end
   end
