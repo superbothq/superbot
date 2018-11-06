@@ -3,7 +3,6 @@
 require "sinatra/base"
 require "sinatra/silent"
 require 'net/http'
-require 'selenium-webdriver'
 
 require_relative "capybara/convert"
 require_relative "capybara/runner"
@@ -61,17 +60,6 @@ module Superbot
             )
             status response.code
             headers instance.all_headers(response)
-
-            if %w(cloud local_cloud).include?(webdriver_type) && verb == 'post' && request.path_info == '/wd/hub/session' && response.kind_of?(Net::HTTPSuccess)
-              session_id = JSON.parse(response.body)['sessionId']
-
-              puts "Opening screenshots stream..."
-              options = Selenium::WebDriver::Chrome::Options.new
-              options.add_argument("app=#{Superbot.screenshots_url(webdriver_type, session_id)}")
-              options.add_argument('no-sandbox')
-              ::Selenium::WebDriver.for :chrome, options: options
-            end
-
             response.body
           rescue
             error_message = "Remote webdriver doesn't responding"
