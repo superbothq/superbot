@@ -23,7 +23,7 @@ module Superbot
       end
 
       def subcommand_missing(name)
-        return super unless %w(cloud local).include?(name)
+        return super unless name == 'local'
 
         abort "Subcommand '#{name}' requires gem superbot-#{name} to be installed"
       end

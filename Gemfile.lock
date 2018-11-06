@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    superbot (0.1.7)
+    superbot (0.1.8)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
       sinatra (= 2.0.3)
       sinatra-silent (= 0.0.1)
+      superbot-cloud (~> 0.1.4)
       zaru (= 0.2.0)
 
 GEM
@@ -64,9 +65,13 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     lumberjack (1.0.13)
+    marcel (0.3.3)
+      mimemagic (~> 0.3.2)
     method_source (0.9.0)
+    mimemagic (0.3.2)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
+    multipart-post (2.0.0)
     mustermann (1.0.3)
     nenv (0.3.0)
     nokogiri (1.8.5)
@@ -136,6 +141,9 @@ GEM
       capybara (= 3.6.0)
       cjsonci (= 0.1.0)
       superbot-selenium-webdriver (= 314.2.5)
+    superbot-cloud (0.1.4)
+      marcel (= 0.3.3)
+      multipart-post (= 2.0.0)
     superbot-selenium-webdriver (314.2.5)
       chromedriver-helper (= 1.2.0)
       selenium-webdriver (= 3.14.0)
