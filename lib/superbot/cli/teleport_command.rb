@@ -5,7 +5,7 @@ module Superbot
     class TeleportCommand < Clamp::Command
       include Superbot::Validations
 
-      option ['--browser'], 'BROWSER', "Browser type to use. Can be either local or cloud", default: 'local' do |browser|
+      option ['--browser'], 'BROWSER', "Browser type to use. Can be either local or cloud", default: 'cloud' do |browser|
         validates_browser_type browser
       end
       option ['--region'], 'REGION', 'Region for remote webdriver'

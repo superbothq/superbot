@@ -11,7 +11,6 @@ module Superbot
       banner "superbot 🤖"
 
       subcommand ["new"], "Create a new project", NewCommand
-      subcommand ["run"], "Run a project", RunCommand
       subcommand ["version"], "Show version information", VersionCommand
       subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand
 
