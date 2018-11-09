@@ -9,7 +9,7 @@ require_relative "capybara/runner"
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'local', auth_user: nil, auth_password: nil)
+    def initialize(webdriver_type: 'cloud')
       @sinatra = Sinatra.new
       @sinatra.set :bind, "127.0.0.1"
       @sinatra.set :silent_sinatra, true
@@ -38,10 +38,7 @@ module Superbot
       end
 
       webdriver_uri = URI.parse(Superbot.webdriver_endpoint(webdriver_type))
-      @auth_user = auth_user
-      @auth_password = auth_password
       @request_settings = {
-        userinfo: [@auth_user, @auth_password].join(':'),
         host:     webdriver_uri.host,
         port:     webdriver_uri.port,
         path:     webdriver_uri.path
@@ -82,7 +79,11 @@ module Superbot
         )
       )
       req = Net::HTTP.const_get(type).new(uri, new_headers.merge('Content-Type' => 'application/json'))
-      req.basic_auth(@auth_user, @auth_password) if @auth_user && @auth_password
+
+      if Superbot::Cloud.credentials
+        req.basic_auth(*Superbot::Cloud.credentials.slice(:username, :token).values)
+      end
+
       req.body = body.read
       Net::HTTP.new(uri.hostname, uri.port).start do |http|
         http.read_timeout = Superbot.cloud_timeout
