@@ -10,6 +10,11 @@ module Superbot
     class RootCommand < Clamp::Command
       banner "superbot 🤖"
 
+      option ['-v', '--version'], :flag, "Show version information" do
+        puts Superbot::VERSION
+        exit(0)
+      end
+
       subcommand ["new"], "Create a new project", NewCommand
       subcommand ["version"], "Show version information", VersionCommand
       subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand
