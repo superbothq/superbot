@@ -62,7 +62,7 @@ module Superbot
             headers instance.all_headers(response)
             response.body
           rescue StandardError => e
-            error_message = "Remote webdriver doesn't responding"
+            error_message = "Remote webdriver doesn't respond"
             puts error_message, e
             halt 500, { message: error_message }.to_json
           end
@@ -99,6 +99,8 @@ module Superbot
       Net::HTTP.new(uri.hostname, uri.port).start do |http|
         http.read_timeout = Superbot.cloud_timeout
         http.request(req)
+      end.tap do |response|
+        output_response_errors(response)
       end
     end
 
@@ -120,6 +122,15 @@ module Superbot
 
     def incomming_headers(request)
       request.env.map { |header, value| [header[5..-1].split("_").map(&:capitalize).join('-'), value] if header.start_with?("HTTP_") }.compact.to_h
+    end
+
+    def output_response_errors(response)
+      return unless response.is_a?(Net::HTTPClientError) || response.is_a?(Net::HTTPServerError)
+
+      parsed_body = JSON.parse(response.body, symbolize_names: true)
+      puts "Error: #{parsed_body[:error]}"
+    rescue JSON::ParserError
+      puts "Request to webdriver failed with status: #{response.code}"
     end
 
     def run!
