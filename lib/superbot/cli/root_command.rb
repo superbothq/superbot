@@ -15,9 +15,12 @@ module Superbot
         exit(0)
       end
 
-      subcommand ["new"], "Create a new project", NewCommand
       subcommand ["version"], "Show version information", VersionCommand
       subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand
+      if ENV['SUPERBOT_FEAT_PROJECT'] == 'true'
+        subcommand ["new"], "Create a new project", NewCommand
+        subcommand ["run"], "Run a project", RunCommand
+      end
 
       def self.run
         super
