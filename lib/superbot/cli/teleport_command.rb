@@ -11,9 +11,11 @@ module Superbot
       option ['--region'], 'REGION', 'Region for remote webdriver'
 
       def execute
-        @web = Superbot::Web.new(webdriver_type: browser).tap(&:run_async_after_running!)
+        @web = Superbot::Web.new(webdriver_type: browser, region: region)
+        @web.run_async_after_running!
 
         @chromedriver = Kommando.run_async 'chromedriver --silent --port=9515' if browser == 'local'
+
         puts "", "🤖 Teleport is active ☁️ "
         puts "", "Configure your webdriver to http://localhost:4567/wd/hub"
 
