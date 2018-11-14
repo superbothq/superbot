@@ -13,8 +13,6 @@ module Superbot
         validates_browser_type browser
       end
       option ['--region'], 'REGION', 'Region for remote webdriver'
-      option ['-u', '--user'], 'AUTH_USER_NAME', 'Cloud webdriver auth credentials', environment_variable: 'AUTH_USER_NAME', attribute_name: :auth_user
-      option ['-p', '--password'], 'AUTH_USER_PASSWORD', 'Cloud webdriver auth credentials', environment_variable: 'AUTH_USER_PASSWORD', attribute_name: :auth_password
 
       def execute
         script = File.read(File.join(path, 'main.rb'))

@@ -2,19 +2,20 @@
 
 require "sinatra/base"
 require "sinatra/silent"
-require 'net/http'
+require "net/http"
 
 require_relative "capybara/convert"
 require_relative "capybara/runner"
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'cloud')
+    def initialize(webdriver_type: 'cloud', region: nil)
       @sinatra = Sinatra.new
       @sinatra.set :bind, "127.0.0.1"
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
+      @sinatra.server_settings[:Silent] = true
       instance = self
 
       @sinatra.before do
@@ -37,20 +38,23 @@ module Superbot
         instance.capybara_runner.run(converted_script)
       end
 
-      webdriver_uri = URI.parse(Superbot.webdriver_endpoint(webdriver_type))
+      @webdriver_type = webdriver_type
+      webdriver_uri = URI.parse(Superbot.webdriver_endpoint(@webdriver_type))
       @request_settings = {
         host:     webdriver_uri.host,
         port:     webdriver_uri.port,
         path:     webdriver_uri.path
       }
+      @region = region
 
       %w(get post put patch delete).each do |verb|
         @sinatra.send(verb, "/wd/hub/*") do
           begin
+            request_path = request.path_info.gsub('/wd/hub', '')
             content_type 'application/json'
             response = instance.remote_webdriver_request(
               verb.capitalize,
-              request.path_info,
+              request_path,
               request.query_string,
               request.body,
               instance.incomming_headers(request)
@@ -58,9 +62,9 @@ module Superbot
             status response.code
             headers instance.all_headers(response)
             response.body
-          rescue
-            error_message = "Remote webdriver doesn't responding"
-            puts error_message
+          rescue StandardError => e
+            error_message = "Remote webdriver doesn't respond"
+            puts error_message, e
             halt 500, { message: error_message }.to_json
           end
         end
@@ -74,21 +78,39 @@ module Superbot
     def remote_webdriver_request(type, path, query_string, body, new_headers)
       uri = URI::HTTP.build(
         @request_settings.merge(
-          path: [@request_settings[:path], path.gsub('wd/hub/', '')].join,
+          path: @request_settings[:path] + path,
           query: query_string.empty? ? nil : query_string
         )
       )
       req = Net::HTTP.const_get(type).new(uri, new_headers.merge('Content-Type' => 'application/json'))
 
-      if Superbot::Cloud.credentials
-        req.basic_auth(*Superbot::Cloud.credentials.slice(:username, :token).values)
-      end
+      request_body = body.read
+      if cloud_teleport?
+        user_auth_creds = Superbot::Cloud.credentials&.slice(:username, :token)
+        req.basic_auth(*user_auth_creds.values) if user_auth_creds
 
-      req.body = body.read
+        if @region && creating_session?(type, path)
+          parsed_body = JSON.parse(request_body)
+          parsed_body['desiredCapabilities']['superOptions'] = { 'region': @region }
+          request_body = parsed_body.to_json
+        end
+      end
+      req.body = request_body
+
       Net::HTTP.new(uri.hostname, uri.port).start do |http|
         http.read_timeout = Superbot.cloud_timeout
         http.request(req)
+      end.tap do |response|
+        output_response_errors(response)
       end
+    end
+
+    def cloud_teleport?
+      %w(cloud local_cloud).include?(@webdriver_type)
+    end
+
+    def creating_session?(method, path)
+      method.casecmp?('post') && path == '/session'
     end
 
     def all_headers(response)
@@ -101,6 +123,15 @@ module Superbot
 
     def incomming_headers(request)
       request.env.map { |header, value| [header[5..-1].split("_").map(&:capitalize).join('-'), value] if header.start_with?("HTTP_") }.compact.to_h
+    end
+
+    def output_response_errors(response)
+      return unless response.is_a?(Net::HTTPClientError) || response.is_a?(Net::HTTPServerError)
+
+      parsed_body = JSON.parse(response.body, symbolize_names: true)
+      puts "Error: #{parsed_body[:error]}"
+    rescue JSON::ParserError
+      puts "Request to webdriver failed with status: #{response.code}"
     end
 
     def run!
