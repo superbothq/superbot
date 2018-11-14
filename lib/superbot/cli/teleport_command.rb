@@ -21,8 +21,9 @@ module Superbot
 
         @chromedriver = Kommando.run_async 'chromedriver --silent --port=9515' if browser == 'local'
 
-        puts "", "🤖 Teleport is active ☁️ "
+        puts "", "🤖 Teleport is open ☁️ "
         puts "", "Configure your webdriver to http://localhost:4567/wd/hub"
+        puts "", "Press [enter] to close teleport"
 
         $stdin.gets
       ensure
