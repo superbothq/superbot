@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    superbot (0.1.12)
+    superbot (0.1.13)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
       sinatra (= 2.0.3)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (~> 0.1.4)
+      superbot-cloud (~> 0.1.8)
       zaru (= 0.2.0)
 
 GEM
@@ -111,7 +111,7 @@ GEM
       rack-protection (= 2.0.3)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
-    superbot-cloud (0.1.6)
+    superbot-cloud (0.1.8)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
     thor (0.20.0)
