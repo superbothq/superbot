@@ -15,6 +15,7 @@ module Superbot
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
+      @sinatra.server_settings[:Silent] = true
       instance = self
 
       @sinatra.before do
