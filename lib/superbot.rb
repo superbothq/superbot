@@ -4,14 +4,14 @@ module Superbot
   DOMAIN = ENV.fetch('SUPERBOT_DOMAIN', 'superbot.cloud')
 
   WEBDRIVER_ENDPOINT = {
-    cloud: "http://webdriver.#{DOMAIN}/webdriver/v1",
+    cloud: "https://webdriver.#{DOMAIN}/webdriver/v1",
     local: "http://127.0.0.1:9515",
     local_cloud: "http://localhost:3000/webdriver/v1"
   }.freeze
   private_constant :WEBDRIVER_ENDPOINT
 
   SCREENSHOTS_ENDPOINT = {
-    cloud: "http://peek.#{DOMAIN}/v1",
+    cloud: "https://peek.#{DOMAIN}/v1",
     local_cloud: "http://localhost:3002/v1"
   }.freeze
   private_constant :SCREENSHOTS_ENDPOINT
