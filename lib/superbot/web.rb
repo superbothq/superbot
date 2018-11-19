@@ -41,6 +41,7 @@ module Superbot
       @webdriver_type = webdriver_type
       webdriver_uri = URI.parse(Superbot.webdriver_endpoint(@webdriver_type))
       @request_settings = {
+        scheme:   webdriver_uri.scheme,
         host:     webdriver_uri.host,
         port:     webdriver_uri.port,
         path:     webdriver_uri.path
@@ -76,7 +77,7 @@ module Superbot
     end
 
     def remote_webdriver_request(type, path, query_string, body, new_headers)
-      uri = URI::HTTP.build(
+      uri = URI.const_get(@request_settings[:scheme].upcase).build(
         @request_settings.merge(
           path: @request_settings[:path] + path,
           query: query_string.empty? ? nil : query_string
@@ -97,9 +98,14 @@ module Superbot
       end
       req.body = request_body
 
-      Net::HTTP.new(uri.hostname, uri.port).start do |http|
-        http.read_timeout = Superbot.cloud_timeout
-        http.request(req)
+      http = Net::HTTP.new(uri.hostname, uri.port)
+      if uri.scheme == 'https'
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      end
+      http.read_timeout = Superbot.cloud_timeout
+      http.start do |client|
+        client.request(req)
       end.tap do |response|
         output_response_errors(response)
       end
