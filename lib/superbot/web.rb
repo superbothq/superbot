@@ -98,14 +98,10 @@ module Superbot
       end
       req.body = request_body
 
-      http = Net::HTTP.new(uri.hostname, uri.port)
-      if uri.scheme == 'https'
-        http.use_ssl = true
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      end
-      http.read_timeout = Superbot.cloud_timeout
-      http.start do |client|
-        client.request(req)
+        http.read_timeout = Superbot.cloud_timeout
+        http.request(req)
       end.tap do |response|
         output_response_errors(response)
       end
