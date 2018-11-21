@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    superbot (0.1.19)
+    superbot (0.1.20)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
