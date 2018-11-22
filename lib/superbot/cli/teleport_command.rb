@@ -23,11 +23,26 @@ module Superbot
 
         puts "", "🤖 Teleport is open ☁️ "
         puts "", "Configure your webdriver to http://localhost:4567/wd/hub"
-        puts "", "Press [enter] to close teleport"
+        puts "", "Press [control+c] to close teleport"
 
-        $stdin.gets
+        handle_keyboard_interrupt
       ensure
         close_teleport
+      end
+
+      def handle_keyboard_interrupt
+        @interrupted = false
+
+        trap "SIGINT" do
+          puts
+          puts "Command killed by keyboard interrupt"
+          @interrupted = true
+          exit 130
+        end
+
+        loop do
+          break if @interrupted
+        end
       end
 
       def close_teleport

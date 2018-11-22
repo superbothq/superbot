@@ -4,6 +4,7 @@ require_relative "new_command"
 require_relative "run_command"
 require_relative "teleport_command"
 require_relative "version_command"
+require_relative "record_command"
 
 module Superbot
   module CLI
@@ -17,6 +18,7 @@ module Superbot
 
       subcommand ["version"], "Show version information", VersionCommand
       subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand
+      subcommand ["record"], "Open browser with selenium ide pre-loaded", RecordCommand if ENV['SUPERBOT_FEAT_RECORD'] == 'true'
       if ENV['SUPERBOT_FEAT_PROJECT'] == 'true'
         subcommand ["new"], "Create a new project", NewCommand
         subcommand ["run"], "Run a project", RunCommand
