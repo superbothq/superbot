@@ -22,7 +22,7 @@ module Superbot
       def convert_action(action)
         case action[:type]
         when 'visit'      then "visit '#{action[:url]}'"
-        when 'click'      then "click_on '#{action[:selector]}'"
+        when 'click'      then "find('#{action[:selector]}').click"
         when 'scroll'     then
           "page.execute_script('window.scrollBy(0,' + (page.execute_script('return document.body.scrollHeight') * #{action[:amountPercent]} / 100).to_s + ')')"
         when 'resolution' then "page.driver.browser.manage.window.resize_to(#{action[:resolution].join(',')})"
