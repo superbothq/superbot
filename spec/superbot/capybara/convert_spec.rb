@@ -12,7 +12,7 @@ RSpec.describe Superbot::Capybara::Convert do
 
       expected_script = [
         "visit 'http://www.example.com'",
-        "click_on 'Link'",
+        "find('Link').click",
         "page.execute_script('window.scrollBy(0,' + (page.execute_script('return document.body.scrollHeight') * 10 / 100).to_s + ')')",
         "page.driver.browser.manage.window.resize_to(1920,1080)"
       ].join('; ')
