@@ -4,8 +4,8 @@ require "simplecov"
 SimpleCov.at_exit do
   SimpleCov.result.format!
 end
-SimpleCov.minimum_coverage 0
-SimpleCov.minimum_coverage_by_file 0
+SimpleCov.minimum_coverage 80
+SimpleCov.minimum_coverage_by_file 80
 SimpleCov.start do
   add_filter "/spec/"
   add_filter "/lib/superbot/cli/"
