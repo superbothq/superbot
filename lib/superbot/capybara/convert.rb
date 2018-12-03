@@ -28,13 +28,17 @@ module Superbot
         when 'resolution' then "page.driver.browser.manage.window.resize_to(#{action[:resolution].join(',')})"
         when 'has-text'   then "page.assert_text('#{action[:text]}')"
         when 'input'      then "find('#{action[:selector]}', match: :first).set('#{action[:value]}')"
-        when 'key-press'  then "page.driver.browser.action.send_keys(#{action[:keys].map { |k| k.delete(':').to_sym if k.length > 1 }}).perform"
+        when 'key-press'  then "page.driver.browser.action.send_keys(#{coerced_keys(action[:keys])}).perform"
         end
       end
 
       def converted_json
         return json.map { |action| convert_action(action) }.join('; ') if json.is_a?(Array)
         return convert_action(json) if json.is_a?(Hash)
+      end
+
+      def coerced_keys(incoming_keys)
+        incoming_keys.map { |k| k = k.delete(':'); k.length > 1 && k.to_sym || k.to_s }
       end
     end
   end

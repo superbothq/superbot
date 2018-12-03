@@ -11,7 +11,7 @@ module Superbot
   class Web
     def initialize(webdriver_type: 'cloud', region: nil)
       @sinatra = Sinatra.new
-      @sinatra.set :bind, "127.0.0.1"
+      @sinatra.set :bind, ENV.fetch('TELEPORT_BIND_IP', "127.0.0.1")
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
@@ -34,8 +34,13 @@ module Superbot
       end
 
       @sinatra.post "/__superbot/v1/convert" do
-        converted_script = Superbot::Capybara::Convert.call(request.body.read)
-        instance.capybara_runner.run(converted_script)
+        begin
+          converted_script = Superbot::Capybara::Convert.call(request.body.read)
+          instance.capybara_runner.run(converted_script)
+          halt 200
+        rescue SystemExit => e
+          e.message
+        end
       end
 
       @webdriver_type = webdriver_type

@@ -25,7 +25,7 @@ module Superbot
         @capybara_runner.run(script)
         puts @capybara_runner.test_result
 
-        puts "Press ENTER to exit"
+        puts "Press [enter] to exit"
 
         $stdin.gets
       ensure
