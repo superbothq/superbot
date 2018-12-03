@@ -1,6 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Superbot::CLI::NewCommand do
+  before do
+    ENV['SUPERBOT_FEAT_PROJECT'] = 'true'
+  end
+
   describe "errors" do
     around do |example|
       FileUtils.mkdir superbot_test_path("existing") unless Dir.exist? superbot_test_path("existing")

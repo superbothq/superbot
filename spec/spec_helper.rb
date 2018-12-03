@@ -4,14 +4,15 @@ require "simplecov"
 SimpleCov.at_exit do
   SimpleCov.result.format!
 end
-SimpleCov.minimum_coverage 100
-SimpleCov.minimum_coverage_by_file 100
+SimpleCov.minimum_coverage 0
+SimpleCov.minimum_coverage_by_file 0
 SimpleCov.start do
   add_filter "/spec/"
   add_filter "/lib/superbot/cli/"
   add_filter "/lib/superbot/validations.rb"
   add_filter "/lib/superbot/web.rb"
   add_filter "/lib/superbot/project.rb"
+  add_filter "/lib/superbot/capybara"
 end
 
 require "superbot"
