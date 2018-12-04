@@ -21,6 +21,7 @@ module Superbot
 
       def convert_action(action)
         case action[:type]
+        when 'target-selector' then "page.execute_script('#{action[:script]}')"
         when 'visit'      then "visit '#{action[:url]}'"
         when 'click'      then "click_on '#{action[:selector]}'"
         when 'scroll'     then

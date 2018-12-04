@@ -16,6 +16,7 @@ module Superbot
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
       @sinatra.server_settings[:Silent] = true
+      @@new_selector = nil
       instance = self
 
       @sinatra.before do
@@ -31,6 +32,15 @@ module Superbot
 
       @sinatra.get "/__superbot/v1/ping" do
         "PONG"
+      end
+
+      @sinatra.post "/__superbot/v1/selector" do
+        @@new_selector = request.body.read
+      end
+
+      @sinatra.get "/__superbot/v1/selector" do
+        body @@new_selector
+        @@new_selector = nil
       end
 
       @sinatra.post "/__superbot/v1/convert" do
