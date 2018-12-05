@@ -17,7 +17,7 @@ module Superbot
       end
 
       subcommand ["version"], "Show version information", VersionCommand
-      subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand
+      subcommand ["teleport"], "Open a teleport for superbots", TeleportCommand if ENV['SUPERBOT_FEAT_TELEPORT'] == 'true'
       subcommand ["record"], "Open browser with selenium ide pre-loaded", RecordCommand if ENV['SUPERBOT_FEAT_RECORD'] == 'true'
       if ENV['SUPERBOT_FEAT_PROJECT'] == 'true'
         subcommand ["new"], "Create a new project", NewCommand

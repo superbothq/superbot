@@ -4,6 +4,7 @@ RSpec.describe Superbot::CLI::TeleportCommand do
   describe "teleport" do
     before do
       ENV['SUPERBOT_FEAT_PROJECT'] = 'true'
+      ENV['SUPERBOT_FEAT_TELEPORT'] = 'true'
       ENV['SUPERBOT_DOMAIN'] = 'localhost:3000'
       ENV['SUPERBOT_URI_SCHEME'] = 'http'
     end
