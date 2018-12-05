@@ -10,9 +10,9 @@ RSpec.describe Superbot do
   describe '.webdriver_endpoint' do
     it "returns correct webdriver url" do
       {
-        cloud: "https://webdriver.superbot.cloud/webdriver/v1",
+        cloud: "https://webdriver.superbot.cloud",
         local: "http://127.0.0.1:9515",
-        local_cloud: "http://localhost:3000/webdriver/v1"
+        local_cloud: "http://localhost:3000"
       }.each do |type, url|
         expect(Superbot.webdriver_endpoint(type)).to eq(url)
       end

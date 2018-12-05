@@ -5,9 +5,9 @@ module Superbot
   URI_SCHEME = ENV.fetch('SUPERBOT_URI_SCHEME', 'https')
 
   WEBDRIVER_ENDPOINT = {
-    cloud: "#{URI_SCHEME}://webdriver.#{DOMAIN}/webdriver/v1",
+    cloud: "#{URI_SCHEME}://webdriver.#{DOMAIN}",
     local: "http://127.0.0.1:9515",
-    local_cloud: "http://localhost:3000/webdriver/v1"
+    local_cloud: "http://localhost:3000"
   }.freeze
   private_constant :WEBDRIVER_ENDPOINT
 

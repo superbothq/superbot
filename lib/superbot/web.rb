@@ -56,7 +56,8 @@ module Superbot
       %w(get post put patch delete).each do |verb|
         @sinatra.send(verb, "/wd/hub/*") do
           begin
-            request_path = request.path_info.gsub('/wd/hub', '')
+            request_path = request.path_info
+            request_path.delete!('/wd/hub', '') if @webdriver_type == 'local'
             content_type 'application/json'
             response = instance.remote_webdriver_request(
               verb.capitalize,
