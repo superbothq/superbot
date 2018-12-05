@@ -8,6 +8,6 @@ before_install:
   - gem install bundler -v 1.16.2
 deploy:
   provider: rubygems
-  api_key: $RUBYGEMS_API_KEY
+  api_key: ${RUBYGEMS_API_KEY}
   on:
     branch: master
