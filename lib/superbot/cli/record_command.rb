@@ -16,14 +16,15 @@ module Superbot
       private
 
       def open_superside
-        profile = Selenium::WebDriver::Chrome::Profile.new
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument("app=about:blank")
         options.add_argument("no-sandbox")
-        options.add_argument("force-dev-mode-highlighting")
-        profile.add_extension(File.join(File.dirname(__dir__), '../..', 'bin', 'superside.crx'))
+        options.add_extension(File.join(File.dirname(__dir__), '../..', 'bin', 'superside.crx'))
+        browser = Selenium::WebDriver.for :chrome, options: options
 
-        @superside = Selenium::WebDriver.for :chrome, options: options, profile: profile
+        # close browser window when extension is loaded
+        sleep 0.5
+        browser.close
       end
     end
   end
