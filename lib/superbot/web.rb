@@ -11,7 +11,7 @@ module Superbot
   class Web
     def initialize(webdriver_type: 'cloud', region: nil)
       @sinatra = Sinatra.new
-      @sinatra.set :bind, ENV.fetch('TELEPORT_BIND_IP', "127.0.0.1")
+      @sinatra.set :bind, ENV.fetch('SUPERBOT_TELEPORT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
