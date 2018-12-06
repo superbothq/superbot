@@ -6,6 +6,12 @@ require "net/http"
 
 require_relative "capybara/convert"
 require_relative "capybara/runner"
+begin
+  require "superbot/teleport"
+  TELEPORT_ENABLED = true
+rescue LoadError
+  TELEPORT_ENABLED = false
+end
 
 module Superbot
   class Web
@@ -43,107 +49,19 @@ module Superbot
         end
       end
 
-      @webdriver_type = webdriver_type
-      webdriver_uri = URI.parse(Superbot.webdriver_endpoint(@webdriver_type))
-      @request_settings = {
-        scheme:   webdriver_uri.scheme,
-        host:     webdriver_uri.host,
-        port:     webdriver_uri.port,
-        path:     webdriver_uri.path
-      }
-      @region = region
-
-      %w(get post put patch delete).each do |verb|
-        @sinatra.send(verb, "/wd/hub/*") do
-          begin
-            request_path = request.path_info
-            request_path.delete!('/wd/hub', '') if @webdriver_type == 'local'
-            content_type 'application/json'
-            response = instance.remote_webdriver_request(
-              verb.capitalize,
-              request_path,
-              request.query_string,
-              request.body,
-              instance.incomming_headers(request)
-            )
-            status response.code
-            headers instance.all_headers(response)
-            response.body
-          rescue StandardError => e
-            error_message = "Remote webdriver doesn't respond"
-            puts error_message, e
-            halt 500, { message: error_message }.to_json
-          end
-        end
-      end
+      Superbot::Teleport::Web.register(@sinatra, webdriver_type: webdriver_type, region: region) if TELEPORT_ENABLED
     end
 
     def capybara_runner
       @capybara_runner ||= Superbot::Capybara::Runner.new
     end
 
-    def remote_webdriver_request(type, path, query_string, body, new_headers)
-      uri = URI.const_get(@request_settings[:scheme].upcase).build(
-        @request_settings.merge(
-          path: @request_settings[:path] + path,
-          query: query_string.empty? ? nil : query_string
-        )
-      )
-      req = Net::HTTP.const_get(type).new(uri, new_headers.merge('Content-Type' => 'application/json'))
-
-      request_body = body.read
-      if cloud_teleport?
-        user_auth_creds = Superbot::Cloud.credentials&.slice(:username, :token)
-        req.basic_auth(*user_auth_creds.values) if user_auth_creds
-
-        if @region && creating_session?(type, path)
-          parsed_body = JSON.parse(request_body)
-          parsed_body['desiredCapabilities']['superOptions'] = { 'region': @region }
-          request_body = parsed_body.to_json
-        end
-      end
-      req.body = request_body
-
-      Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        http.read_timeout = Superbot.cloud_timeout
-        http.request(req)
-      end.tap do |response|
-        output_response_errors(response)
-      end
-    end
-
-    def cloud_teleport?
-      %w(cloud local_cloud).include?(@webdriver_type)
-    end
-
-    def creating_session?(method, path)
-      method.casecmp?('post') && path == '/session'
-    end
-
-    def all_headers(response)
-      header_list = {}
-      response.header.each_capitalized do |k, v|
-        header_list[k] = v unless k == "Transfer-Encoding"
-      end
-      header_list
-    end
-
-    def incomming_headers(request)
-      request.env.map { |header, value| [header[5..-1].split("_").map(&:capitalize).join('-'), value] if header.start_with?("HTTP_") }.compact.to_h
-    end
-
-    def output_response_errors(response)
-      return unless response.is_a?(Net::HTTPClientError) || response.is_a?(Net::HTTPServerError)
-
-      parsed_body = JSON.parse(response.body, symbolize_names: true)
-      puts "Error: #{parsed_body[:error]}"
-    rescue JSON::ParserError
-      puts "Request to webdriver failed with status: #{response.code}"
-    end
-
     def run!
       @sinatra.run_async!
+    end
+
+    def run
+      @sinatra.run!
     end
 
     def run_async_after_running!
