@@ -9,11 +9,13 @@ $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 STDOUT.sync = true
 
 require 'superbot'
-require 'superbot/cloud'
-begin
-  require "superbot/local"
-rescue LoadError
-  p # do nothing
+
+%w(cloud local teleport).each do |gem_ext|
+  begin
+    require "superbot/#{gem_ext}"
+  rescue LoadError
+    p # do nothing
+  end
 end
 
 Superbot::CLI::RootCommand.run
