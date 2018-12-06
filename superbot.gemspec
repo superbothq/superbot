@@ -47,7 +47,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop", "~> 0.53"
   spec.add_development_dependency "simplecov", "~> 0.16"
-  spec.add_development_dependency "parallel_tests", "~> 2.22"
   spec.add_development_dependency "excon", "~> 0.62"
 
   spec.add_development_dependency "guard", "~> 2.14"
