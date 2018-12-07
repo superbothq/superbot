@@ -117,7 +117,7 @@ GEM
       rack-protection (= 2.0.4)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
-    superbot-cloud (0.1.18)
+    superbot-cloud (0.1.19)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
     superbot-teleport (0.2.1)
@@ -133,7 +133,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 1.17)
   excon (~> 0.62)
   guard (~> 2.14)
   guard-rspec (~> 4.7)
