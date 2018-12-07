@@ -39,5 +39,6 @@ end
 
 require_relative "superbot/version"
 require_relative "superbot/project"
+require_relative "superbot/convert"
 require_relative "superbot/cli"
 require_relative "superbot/web"
