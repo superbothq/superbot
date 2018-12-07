@@ -137,6 +137,9 @@ Lint/AssignmentInCondition:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#lintassignmentincondition
 
+Lint/NestedMethodDefinition:
+  Enabled: false
+
 Metrics/AbcSize:
   Enabled: false
 
