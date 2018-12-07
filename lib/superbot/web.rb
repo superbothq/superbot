@@ -6,16 +6,10 @@ require "net/http"
 
 require_relative "capybara/convert"
 require_relative "capybara/runner"
-begin
-  require "superbot/teleport"
-  TELEPORT_ENABLED = true
-rescue LoadError
-  TELEPORT_ENABLED = false
-end
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'cloud', region: nil)
+    def initialize
       @sinatra = Sinatra.new
       @sinatra.set :bind, ENV.fetch('SUPERBOT_TELEPORT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
@@ -48,8 +42,6 @@ module Superbot
           e.message
         end
       end
-
-      Superbot::Teleport::Web.register(@sinatra, webdriver_type: webdriver_type, region: region) if TELEPORT_ENABLED
     end
 
     def capybara_runner
@@ -62,6 +54,10 @@ module Superbot
 
     def run
       @sinatra.run!
+    end
+
+    def register(extension, options = nil)
+      options && extension.register(@sinatra, options) || extension.register(@sinatra)
     end
 
     def run_async_after_running!
