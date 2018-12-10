@@ -76,7 +76,7 @@ module Superbot
             kill_session
             abort "Remote browser error: #{parsed_error[:message]}"
           else
-            puts parsed_error[:message]
+            abort parsed_error[:message]
           end
         end
 
