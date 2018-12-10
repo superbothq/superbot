@@ -22,6 +22,10 @@ module Superbot
         subcommand ["run"], "Run a project", RunCommand
       end
 
+      if defined?(::Superbot::Local::CLI::RootCommand)
+        subcommand ["local"], "Show local commands", ::Superbot::Local::CLI::RootCommand
+      end
+
       if defined?(::Superbot::Cloud::CLI::RootCommand)
         subcommand ["cloud"], "Show cloud commands", ::Superbot::Cloud::CLI::RootCommand
       end
