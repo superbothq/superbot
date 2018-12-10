@@ -43,8 +43,7 @@ Clamp.allow_options_after_parameters = true
 
 require_relative "superbot/version"
 require_relative "superbot/cli/validations"
-
-%w(cloud teleport).each do |microgem|
+%w(cloud teleport selenium).each do |microgem|
   begin
     require "superbot/#{microgem}"
   rescue LoadError
