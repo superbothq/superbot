@@ -26,9 +26,6 @@ guard 'process', name: 'superbot', command: 'superbot' do
   watch(%r{^lib/(.+)\.rb})
 end
 
-guard 'process', name: 'chromedriver', command: 'chromedriver-helper' do
-end
-
 guard :bundler do
   require 'guard/bundler'
   require 'guard/bundler/verify'
