@@ -6,9 +6,9 @@ require "net/http"
 
 module Superbot
   class Web
-    def initialize
+    def initialize(webdriver_type: 'cloud', region: nil)
       @sinatra = Sinatra.new
-      @sinatra.set :bind, ENV.fetch('SUPERBOT_TELEPORT_BIND_ADDRESS', '127.0.0.1')
+      @sinatra.set :bind, ENV.fetch('SUPERBOT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
       @sinatra.set :silent_webrick, true
       @sinatra.set :silent_access_log, false
@@ -28,6 +28,16 @@ module Superbot
       @sinatra.get "/__superbot/v1/ping" do
         "PONG"
       end
+
+      if defined?(Superbot::Teleport::Web)
+        Superbot::Teleport::Web.register(@sinatra, webdriver_type: webdriver_type, region: region)
+      end
+      Superbot::Cloud::Web.register(@sinatra) if defined?(Superbot::Cloud::Web)
+      Superbot::Convert::Web.register(@sinatra) if defined?(Superbot::Convert::Web)
+    end
+
+    def self.run!(options = { webdriver_type: 'cloud', region: nil })
+      new(options).tap(&:run!)
     end
 
     def run_async!
@@ -36,10 +46,6 @@ module Superbot
 
     def run!
       @sinatra.run!
-    end
-
-    def register(extension, options = nil)
-      options && extension.register(@sinatra, options) || extension.register(@sinatra)
     end
 
     def run_async_after_running!

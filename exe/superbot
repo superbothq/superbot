@@ -10,12 +10,4 @@ STDOUT.sync = true
 
 require 'superbot'
 
-%w(cloud local teleport).each do |gem_ext|
-  begin
-    require "superbot/#{gem_ext}"
-  rescue LoadError
-    p # do nothing
-  end
-end
-
 Superbot::CLI::RootCommand.run
