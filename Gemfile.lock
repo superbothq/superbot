@@ -8,7 +8,7 @@ PATH
       selenium-webdriver (~> 3.14, >= 3.14.0)
       sinatra (= 2.0.4)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (~> 0.1.18)
+      superbot-cloud (~> 0.1.19)
       superbot-teleport (~> 0.2.1)
       zaru (= 0.2.0)
 

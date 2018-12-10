@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "launchy", "2.4.3"
   spec.add_runtime_dependency "sinatra-silent", "0.0.1"
   spec.add_runtime_dependency "kommando", "~> 0.1"
-  spec.add_runtime_dependency "superbot-cloud", "~> 0.1.18"
+  spec.add_runtime_dependency "superbot-cloud", "~> 0.1.19"
   spec.add_runtime_dependency "superbot-teleport", "~> 0.2.1"
   spec.add_runtime_dependency "selenium-webdriver", "~> 3.14", ">= 3.14.0"
 
