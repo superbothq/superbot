@@ -4,7 +4,7 @@ require_relative "capybara/convert"
 require_relative "capybara/runner"
 require_relative "convert/web"
 
-module Superob
+module Superbot
   module Convert
   end
 end
