@@ -9,11 +9,5 @@ $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
 STDOUT.sync = true
 
 require 'superbot'
-require 'superbot/cloud'
-begin
-  require "superbot/local"
-rescue LoadError
-  p # do nothing
-end
 
 Superbot::CLI::RootCommand.run

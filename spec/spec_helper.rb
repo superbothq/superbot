@@ -20,6 +20,7 @@ require "net/http"
 require "excon"
 
 ENV["SUPERBOT_TEST_RUN"] = "true"
+ENV["SUPERBOT_USE_RUBYGEMS"] = "yes"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

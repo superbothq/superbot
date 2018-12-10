@@ -37,7 +37,22 @@ module Superbot
   end
 end
 
+require "clamp"
+# TODO
+Clamp.allow_options_after_parameters = true
+
 require_relative "superbot/version"
+require_relative "superbot/cli/validations"
+
+%w(cloud teleport).each do |microgem|
+  begin
+    require "superbot/#{microgem}"
+  rescue LoadError
+    puts "WARNING: superbot-#{microgem} is not installed"
+  end
+end
+
 require_relative "superbot/project"
+require_relative "superbot/convert"
 require_relative "superbot/cli"
 require_relative "superbot/web"

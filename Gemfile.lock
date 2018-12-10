@@ -1,14 +1,15 @@
 PATH
   remote: .
   specs:
-    superbot (0.1.27)
+    superbot (0.1.28)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
       selenium-webdriver (~> 3.14, >= 3.14.0)
-      sinatra (= 2.0.3)
+      sinatra (= 2.0.4)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (~> 0.1.18)
+      superbot-cloud (~> 0.1.19)
+      superbot-teleport (~> 0.2.1)
       zaru (= 0.2.0)
 
 GEM
@@ -63,8 +64,6 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     parallel (1.12.1)
-    parallel_tests (2.22.0)
-      parallel
     parser (2.5.1.0)
       ast (~> 2.4.0)
     powerpack (0.1.1)
@@ -73,7 +72,7 @@ GEM
       method_source (~> 0.9.0)
     public_suffix (3.0.3)
     rack (2.0.6)
-    rack-protection (2.0.3)
+    rack-protection (2.0.4)
       rack
     rainbow (3.0.0)
     rake (10.5.0)
@@ -112,15 +111,17 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.0.3)
+    sinatra (2.0.4)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.3)
+      rack-protection (= 2.0.4)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
-    superbot-cloud (0.1.18)
+    superbot-cloud (0.1.19)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
+    superbot-teleport (0.2.1)
+      excon
     thor (0.20.0)
     tilt (2.0.9)
     unicode-display_width (1.3.3)
@@ -130,12 +131,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 1.17)
   excon (~> 0.62)
   guard (~> 2.14)
   guard-rspec (~> 4.7)
   guard-rubocop (~> 1.3)
-  parallel_tests (~> 2.22)
   rake (~> 10.0)
   rspec (~> 3.0)
   rubocop (~> 0.53)
