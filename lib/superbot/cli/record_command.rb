@@ -16,14 +16,14 @@ module Superbot
       private
 
       def open_superside
-        options = Selenium::WebDriver::Chrome::Options.new
+        options = ::Selenium::WebDriver::Chrome::Options.new
         options.add_argument("app=about:blank")
         options.add_argument("no-sandbox")
         options.add_extension(File.join(File.dirname(__dir__), '../..', 'bin', 'superside.crx'))
-        browser = Selenium::WebDriver.for :chrome, options: options
+        browser = ::Selenium::WebDriver.for :chrome, options: options
 
         # close browser window when extension is loaded
-        sleep 0.5
+        sleep 1
         browser.close
       end
     end
