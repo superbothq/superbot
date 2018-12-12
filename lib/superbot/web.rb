@@ -14,6 +14,10 @@ module Superbot
       @sinatra.set :silent_access_log, false
       @sinatra.server_settings[:Silent] = true
 
+      @sinatra.set :webdriver_type, webdriver_type
+      @sinatra.set :webdriver_url, Superbot.webdriver_endpoint(webdriver_type)
+      @sinatra.set :region, region
+
       @sinatra.before do
         headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
         headers['Access-Control-Allow-Origin'] = '*'
@@ -29,11 +33,9 @@ module Superbot
         "PONG"
       end
 
-      if defined?(Superbot::Teleport::Web)
-        Superbot::Teleport::Web.register(@sinatra, webdriver_type: webdriver_type, region: region)
-      end
-      Superbot::Cloud::Web.register(@sinatra) if defined?(Superbot::Cloud::Web)
-      Superbot::Convert::Web.register(@sinatra) if defined?(Superbot::Convert::Web)
+      @sinatra.register Superbot::Teleport::Web if defined?(Superbot::Teleport::Web)
+      @sinatra.register Superbot::Cloud::Web if defined?(Superbot::Cloud::Web)
+      @sinatra.register Superbot::Convert::Web if defined?(Superbot::Convert::Web)
     end
 
     def self.run!(options = { webdriver_type: 'cloud', region: nil })
