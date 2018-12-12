@@ -3,7 +3,7 @@
 module Superbot
   module Convert
     module Web
-      def self.register(sinatra)
+      def self.registered(sinatra)
         sinatra.helpers do
           def capybara_runner
             @capybara_runner ||= Superbot::Capybara::Runner.new
