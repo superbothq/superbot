@@ -22,10 +22,6 @@ module Superbot
         subcommand ["run"], "Run a project", RunCommand
       end
 
-      if defined?(::Superbot::Local::CLI::RootCommand)
-        subcommand ["local"], "Show local commands", ::Superbot::Local::CLI::RootCommand
-      end
-
       if defined?(::Superbot::Cloud::CLI::RootCommand)
         subcommand ["cloud"], "Show cloud commands", ::Superbot::Cloud::CLI::RootCommand
       end
@@ -39,12 +35,6 @@ module Superbot
       rescue StandardError => exc
         warn exc.message
         warn exc.backtrace.join("\n")
-      end
-
-      def subcommand_missing(name)
-        return super unless name == 'local'
-
-        abort "Subcommand '#{name}' requires gem superbot-#{name} to be installed"
       end
     end
   end
