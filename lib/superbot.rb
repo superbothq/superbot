@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'kommando'
+
 module Superbot
   DOMAIN = ENV.fetch('SUPERBOT_DOMAIN', 'superbot.cloud')
   URI_SCHEME = ENV.fetch('SUPERBOT_URI_SCHEME', 'https')
@@ -52,6 +54,5 @@ require_relative "superbot/cli/validations"
 end
 
 require_relative "superbot/project"
-require_relative "superbot/convert"
 require_relative "superbot/cli"
 require_relative "superbot/web"

@@ -12,7 +12,6 @@ SimpleCov.start do
   add_filter "/lib/superbot/validations.rb"
   add_filter "/lib/superbot/web.rb"
   add_filter "/lib/superbot/project.rb"
-  add_filter "/lib/superbot/capybara"
 end
 
 require "superbot"
