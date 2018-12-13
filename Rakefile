@@ -3,16 +3,14 @@
 STDOUT.sync = true
 
 require "bundler/gem_tasks"
+require "rspec/core/rake_task"
 require "rubocop/rake_task"
 require "kommando"
 
 RuboCop::RakeTask.new
+RSpec::Core::RakeTask.new(:spec)
 
 task default: %i[rubocop spec e2e]
-
-task :spec do
-  system('rspec')
-end
 
 task :e2e do
   e2e_k = Kommando.run "bin/e2e"
