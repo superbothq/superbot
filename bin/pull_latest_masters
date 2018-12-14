@@ -4,7 +4,7 @@ set -e
 for component in superbot-teleport superbot-selenium-webdriver superbot-cloud; do
   cd ../$component
     pwd
-    git pull --rebase
     git checkout master
+    git pull --rebase
   cd ../superbot
 done
