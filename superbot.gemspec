@@ -40,9 +40,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "kommando", "~> 0.1"
   spec.add_runtime_dependency "superbot-cloud", "~> 0.1.22"
   spec.add_runtime_dependency "superbot-teleport", "~> 0.2.3"
-  spec.add_runtime_dependency "superbot-selenium-webdriver", "~> 1.0.1"
+  spec.add_runtime_dependency "superbot-selenium-webdriver", "~> 1.0.5"
 
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop", "~> 0.53"
