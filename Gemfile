@@ -8,5 +8,5 @@ gemspec
 unless ENV['SUPERBOT_USE_RUBYGEMS'] == "yes"
   gem "superbot-selenium-webdriver", path: "../superbot-selenium-webdriver"
   gem "superbot-teleport", path: "../superbot-teleport"
-#  gem "superbot-cloud", path: "../superbot-cloud"
+  gem "superbot-cloud", path: "../superbot-cloud"
 end
