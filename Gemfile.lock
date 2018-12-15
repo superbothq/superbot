@@ -1,17 +1,4 @@
 PATH
-  remote: ../superbot-selenium-webdriver
-  specs:
-    superbot-selenium-webdriver (1.0.5)
-      chromedriver-helper (= 2.1.0)
-      selenium-webdriver (= 3.141.0)
-
-PATH
-  remote: ../superbot-teleport
-  specs:
-    superbot-teleport (0.2.3)
-      excon
-
-PATH
   remote: .
   specs:
     superbot (0.1.33)
@@ -142,6 +129,11 @@ GEM
     superbot-cloud (0.1.22)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
+    superbot-selenium-webdriver (1.0.5)
+      chromedriver-helper (= 2.1.0)
+      selenium-webdriver (= 3.141.0)
+    superbot-teleport (0.2.3)
+      excon
     thor (0.20.0)
     tilt (2.0.9)
     unicode-display_width (1.3.3)
@@ -161,8 +153,6 @@ DEPENDENCIES
   rubocop (~> 0.53)
   simplecov (~> 0.16)
   superbot!
-  superbot-selenium-webdriver!
-  superbot-teleport!
 
 BUNDLED WITH
    1.17.1
