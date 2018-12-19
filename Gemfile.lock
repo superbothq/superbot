@@ -1,13 +1,14 @@
 PATH
   remote: .
   specs:
-    superbot (0.1.33)
+    superbot (0.2.0)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
       sinatra (= 2.0.4)
       sinatra-silent (= 0.0.1)
       superbot-cloud (~> 0.1.22)
+      superbot-runner
       superbot-selenium-webdriver (~> 1.0.5)
       superbot-teleport (~> 0.2.3)
       zaru (= 0.2.0)
@@ -63,12 +64,12 @@ GEM
       mimemagic (~> 0.3.2)
     method_source (0.9.0)
     mimemagic (0.3.2)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     multipart-post (2.0.0)
     mustermann (1.0.3)
     nenv (0.3.0)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.9.1)
+      mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -129,6 +130,9 @@ GEM
     superbot-cloud (0.1.22)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
+    superbot-runner (0.1.0)
+      superbot-runner-side
+    superbot-runner-side (0.1.0)
     superbot-selenium-webdriver (1.0.5)
       chromedriver-helper (= 2.1.0)
       selenium-webdriver (= 3.141.0)
