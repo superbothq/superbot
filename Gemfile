@@ -11,4 +11,6 @@ unless ENV['SUPERBOT_USE_RUBYGEMS'] == "yes"
   gem "superbot-cloud", path: "../superbot-cloud"
   gem "superbot-runner", path: "../superbot-runner"
   gem "superbot-runner-side", path: "../superbot-runner-side"
+  gem "superbot-record", path: "../superbot-record"
+  gem "superbot-record-chrome", path: "../superbot-record-chrome"
 end

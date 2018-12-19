@@ -42,6 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "superbot-teleport", "~> 0.2.3"
   spec.add_runtime_dependency "superbot-selenium-webdriver", "~> 1.0.5"
   spec.add_runtime_dependency "superbot-runner"
+  spec.add_runtime_dependency "superbot-record"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"

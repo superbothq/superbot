@@ -2,7 +2,6 @@
 
 require_relative "new_command"
 require_relative "version_command"
-require_relative "record_command"
 
 module Superbot
   module CLI
@@ -15,8 +14,11 @@ module Superbot
       end
 
       subcommand ["version"], "Show version information", VersionCommand
-      subcommand ["record"], "Open browser with selenium ide pre-loaded", RecordCommand if ENV['SUPERBOT_FEAT_RECORD'] == 'true'
       subcommand ["new"], "Create a new project", NewCommand if ENV['SUPERBOT_FEAT_PROJECT'] == 'true'
+
+      if defined?(Superbot::Record::CLI::RootCommand)
+        subcommand ["record"], "Superbot recorder tools", ::Superbot::Record::CLI::RootCommand
+      end
 
       if defined?(::Superbot::Runner::CLI::RootCommand)
         subcommand ["run"], "Run superbot scripts", ::Superbot::Runner::CLI::RootCommand
