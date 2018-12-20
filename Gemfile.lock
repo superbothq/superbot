@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    superbot (0.2.1)
+    superbot (0.2.2)
       clamp (= 1.2.1)
       kommando (~> 0.1)
       launchy (= 2.4.3)
       sinatra (= 2.0.4)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (~> 0.1.22)
+      superbot-cloud (~> 0.2.0)
       superbot-record
       superbot-runner
       superbot-selenium-webdriver (~> 1.0.5)
@@ -64,7 +64,7 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (0.9.0)
-    mimemagic (0.3.2)
+    mimemagic (0.3.3)
     mini_portile2 (2.4.0)
     multipart-post (2.0.0)
     mustermann (1.0.3)
@@ -128,7 +128,7 @@ GEM
       rack-protection (= 2.0.4)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
-    superbot-cloud (0.1.22)
+    superbot-cloud (0.2.0)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
     superbot-record (0.1.0)
