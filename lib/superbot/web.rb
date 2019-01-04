@@ -6,7 +6,7 @@ require "net/http"
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'cloud', region: nil)
+    def initialize(webdriver_type: 'cloud', region: nil, organization: nil)
       @sinatra = Sinatra.new
       @sinatra.set :bind, ENV.fetch('SUPERBOT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
@@ -17,6 +17,7 @@ module Superbot
       @sinatra.set :webdriver_type, webdriver_type
       @sinatra.set :webdriver_url, Superbot.webdriver_endpoint(webdriver_type)
       @sinatra.set :region, region
+      @sinatra.set :organization, organization
 
       @sinatra.before do
         headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -38,7 +39,7 @@ module Superbot
       @sinatra.register Superbot::Convert::Web if defined?(Superbot::Convert::Web)
     end
 
-    def self.run!(options = { webdriver_type: 'cloud', region: nil })
+    def self.run!(options = { webdriver_type: 'cloud', region: nil, organization: nil })
       new(options).tap(&:run!)
     end
 
