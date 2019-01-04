@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -e pipefail
+
+Cleanup () {
+  sessions=$(http :4567/wd/hub/sessions | jq -r '.value[].id')
+
+  for session in $sessions; do
+    http DELETE :4567/wd/hub/session/$session
+  done
+}
+
+Cleanup
+jarg desiredCapabilities[browserName]=chrome | http POST :4567/wd/hub/session
+Cleanup
