@@ -6,7 +6,7 @@ require "net/http"
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'cloud', region: nil)
+    def initialize(webdriver_type: 'cloud', region: nil, organization: nil)
       @sinatra = Sinatra.new
       @sinatra.set :bind, ENV.fetch('SUPERBOT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
