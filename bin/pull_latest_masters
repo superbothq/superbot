@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 set -e
 
-for component in superbot-teleport superbot-selenium-webdriver superbot-cloud; do
+for component in superbot-teleport superbot-selenium-webdriver superbot-cloud superbot-runner superbot-runner-side superbot-record superbot-record-chrome; do
   cd ../$component
     pwd
     git checkout master
-    git pull --rebase
+    git pull --rebase origin master
   cd ../superbot
 done
