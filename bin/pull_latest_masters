@@ -1,7 +1,13 @@
 #!/usr/bin/env sh
 set -e
 
-for component in superbot-teleport superbot-selenium-webdriver superbot-cloud; do
+for component in \
+  superbot-teleport superbot-selenium-webdriver superbot-cloud \
+  superbot-record superbot-record-chrome \
+  superbot-runner superbot-runner-side \
+  superbot \
+  ; do
+
   cd ../$component
     pwd
     git checkout master
