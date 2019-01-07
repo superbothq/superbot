@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "clamp", "1.2.1"
   spec.add_runtime_dependency "zaru", "0.2.0"
-  spec.add_runtime_dependency "sinatra", "2.0.4"
+  spec.add_runtime_dependency "sinatra", "2.0.5"
   spec.add_runtime_dependency "launchy", "2.4.3"
   spec.add_runtime_dependency "sinatra-silent", "0.0.1"
   spec.add_runtime_dependency "kommando", "0.1.2"
