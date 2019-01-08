@@ -1,59 +1,17 @@
 PATH
-  remote: ../superbot-cloud
-  specs:
-    superbot-cloud (0.2.1)
-      marcel (= 0.3.3)
-      multipart-post (= 2.0.0)
-
-PATH
-  remote: ../superbot-record-chrome
-  specs:
-    superbot-record-chrome (0.1.0)
-
-PATH
-  remote: ../superbot-record
-  specs:
-    superbot-record (0.1.0)
-      superbot-record-chrome
-
-PATH
-  remote: ../superbot-runner-side
-  specs:
-    superbot-runner-side (0.1.0)
-
-PATH
-  remote: ../superbot-runner
-  specs:
-    superbot-runner (0.1.2)
-      superbot-runner-side
-
-PATH
-  remote: ../superbot-selenium-webdriver
-  specs:
-    superbot-selenium-webdriver (1.0.5)
-      chromedriver-helper (= 2.1.0)
-      selenium-webdriver (= 3.141.0)
-
-PATH
-  remote: ../superbot-teleport
-  specs:
-    superbot-teleport (0.2.5)
-      excon
-
-PATH
   remote: .
   specs:
-    superbot (0.3.0)
+    superbot (0.3.1)
       clamp (= 1.2.1)
       kommando (= 0.1.2)
       launchy (= 2.4.3)
       sinatra (= 2.0.5)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (= 0.2.1)
+      superbot-cloud (= 0.2.2)
       superbot-record (= 0.1.0)
       superbot-runner (= 0.1.2)
       superbot-selenium-webdriver (= 1.0.5)
-      superbot-teleport (= 0.2.5)
+      superbot-teleport (= 0.2.6)
       zaru (= 0.2.0)
 
 GEM
@@ -112,7 +70,7 @@ GEM
     multipart-post (2.0.0)
     mustermann (1.0.3)
     nenv (0.3.0)
-    nokogiri (1.9.1)
+    nokogiri (1.10.0)
       mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -172,6 +130,20 @@ GEM
       rack-protection (= 2.0.5)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
+    superbot-cloud (0.2.2)
+      marcel (= 0.3.3)
+      multipart-post (= 2.0.0)
+    superbot-record (0.1.0)
+      superbot-record-chrome
+    superbot-record-chrome (0.1.0)
+    superbot-runner (0.1.2)
+      superbot-runner-side
+    superbot-runner-side (0.1.0)
+    superbot-selenium-webdriver (1.0.5)
+      chromedriver-helper (= 2.1.0)
+      selenium-webdriver (= 3.141.0)
+    superbot-teleport (0.2.6)
+      excon
     thor (0.20.0)
     tilt (2.0.9)
     unicode-display_width (1.4.1)
@@ -191,13 +163,6 @@ DEPENDENCIES
   rubocop (~> 0.62)
   simplecov (~> 0.16)
   superbot!
-  superbot-cloud!
-  superbot-record!
-  superbot-record-chrome!
-  superbot-runner!
-  superbot-runner-side!
-  superbot-selenium-webdriver!
-  superbot-teleport!
 
 BUNDLED WITH
    1.17.2
