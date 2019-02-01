@@ -9,7 +9,7 @@ module Superbot
   WEBDRIVER_ENDPOINT = {
     cloud: "#{URI_SCHEME}://webdriver.#{DOMAIN}",
     local: "http://127.0.0.1:9515",
-    local_cloud: "http://localhost:3000"
+    local_cloud: "http://localhost:3200"
   }.freeze
   private_constant :WEBDRIVER_ENDPOINT
 

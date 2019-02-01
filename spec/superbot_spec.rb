@@ -14,7 +14,7 @@ RSpec.describe Superbot do
       {
         cloud: "https://webdriver.superbot.cloud",
         local: "http://127.0.0.1:9515",
-        local_cloud: "http://localhost:3000"
+        local_cloud: "http://localhost:3200"
       }.each do |type, url|
         expect(Superbot.webdriver_endpoint(type)).to eq(url)
       end

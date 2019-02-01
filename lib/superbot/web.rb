@@ -6,7 +6,9 @@ require "net/http"
 
 module Superbot
   class Web
-    def initialize(webdriver_type: 'cloud', region: nil, organization: nil)
+    DEFAULT_OPTIONS = { webdriver_type: 'cloud' }.freeze
+
+    def initialize(teleport_options = {})
       @sinatra = Sinatra.new
       @sinatra.set :bind, ENV.fetch('SUPERBOT_BIND_ADDRESS', '127.0.0.1')
       @sinatra.set :silent_sinatra, true
@@ -14,10 +16,8 @@ module Superbot
       @sinatra.set :silent_access_log, false
       @sinatra.server_settings[:Silent] = true
 
-      @sinatra.set :webdriver_type, webdriver_type
-      @sinatra.set :webdriver_url, Superbot.webdriver_endpoint(webdriver_type)
-      @sinatra.set :region, region
-      @sinatra.set :organization, organization
+      @sinatra.set :teleport_options, DEFAULT_OPTIONS.merge(teleport_options)
+      @sinatra.set :webdriver_url, Superbot.webdriver_endpoint(@sinatra.settings.teleport_options[:webdriver_type])
 
       @sinatra.before do
         headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -39,8 +39,8 @@ module Superbot
       @sinatra.register Superbot::Convert::Web if defined?(Superbot::Convert::Web)
     end
 
-    def self.run!(options = { webdriver_type: 'cloud', region: nil, organization: nil })
-      new(options).tap(&:run!)
+    def self.run!(teleport_options = {})
+      new(teleport_options).tap(&:run!)
     end
 
     def run_async!
