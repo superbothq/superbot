@@ -2,8 +2,7 @@ sudo: false
 language: ruby
 rvm:
   - 2.5
-  - 2.4
-  - 2.3
+  - 2.6
 env:
   - SUPERBOT_USE_RUBYGEMS=yes
 before_install:
