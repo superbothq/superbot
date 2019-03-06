@@ -1,17 +1,17 @@
 PATH
   remote: .
   specs:
-    superbot (0.4.7)
+    superbot (0.4.8)
       clamp (= 1.2.1)
       kommando (= 0.1.2)
       launchy (= 2.4.3)
       sinatra (= 2.0.5)
       sinatra-silent (= 0.0.1)
-      superbot-cloud (= 0.3.5)
+      superbot-cloud (= 0.3.6)
       superbot-record (= 0.1.0)
       superbot-runner (= 0.1.3)
       superbot-selenium-webdriver (= 1.0.5)
-      superbot-teleport (= 0.3.4)
+      superbot-teleport (= 0.3.5)
       zaru (= 0.2.0)
 
 GEM
@@ -130,7 +130,7 @@ GEM
       rack-protection (= 2.0.5)
       tilt (~> 2.0)
     sinatra-silent (0.0.1)
-    superbot-cloud (0.3.5)
+    superbot-cloud (0.3.6)
       marcel (= 0.3.3)
       multipart-post (= 2.0.0)
     superbot-record (0.1.0)
@@ -142,7 +142,7 @@ GEM
     superbot-selenium-webdriver (1.0.5)
       chromedriver-helper (= 2.1.0)
       selenium-webdriver (= 3.141.0)
-    superbot-teleport (0.3.4)
+    superbot-teleport (0.3.5)
       excon
     thor (0.20.0)
     tilt (2.0.9)
