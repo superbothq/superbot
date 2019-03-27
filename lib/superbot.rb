@@ -13,12 +13,6 @@ module Superbot
   }.freeze
   private_constant :WEBDRIVER_ENDPOINT
 
-  SCREENSHOTS_ENDPOINT = {
-    cloud: "https://peek.#{DOMAIN}/v1",
-    local_cloud: "http://localhost:3002/v1"
-  }.freeze
-  private_constant :SCREENSHOTS_ENDPOINT
-
   CLOUD_TIMEOUT = 2000
   private_constant :CLOUD_TIMEOUT
 
@@ -32,10 +26,6 @@ module Superbot
 
   def self.cloud_timeout
     CLOUD_TIMEOUT
-  end
-
-  def self.screenshots_url(type, session_id)
-    "#{SCREENSHOTS_ENDPOINT[type.to_sym]}/#{session_id}"
   end
 end
 
